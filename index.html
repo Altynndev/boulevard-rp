@@ -141,6 +141,84 @@
             </div>
         </div>
     </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-[9999] hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeLoginModal()"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div class="glass-effect rounded-lg shadow-2xl p-8 border border-[#D5D534]/30">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-[#D5D534] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user text-[#0C0C0C] text-2xl"></i>
+                    </div>
+                    <h2 class="pricedown text-3xl text-white">Iniciar <span class="text-[#D5D534]">Sesión</span></h2>
+                    <p class="text-white/60 text-sm mt-2">Ingresa con tu cuenta del servidor</p>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label for="username" class="block text-white font-semibold mb-2">
+                            <i class="fas fa-user mr-2 text-[#D5D534]"></i>Usuario
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            required
+                            class="w-full bg-[#0C0C0C]/50 border border-[#D5D534]/30 rounded px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-[#D5D534] transition-all"
+                            placeholder="Ingresa tu nombre de usuario"
+                        >
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="password" class="block text-white font-semibold mb-2">
+                            <i class="fas fa-lock mr-2 text-[#D5D534]"></i>Contraseña
+                        </label>
+                        <div class="relative">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class="w-full bg-[#0C0C0C]/50 border border-[#D5D534]/30 rounded px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-[#D5D534] transition-all pr-12"
+                                placeholder="Ingresa tu contraseña"
+                            >
+                            <button
+                                type="button"
+                                onclick="togglePasswordVisibility()"
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/40 hover:text-[#D5D534] transition-all"
+                            >
+                                <i id="passwordToggleIcon" class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="loginError" class="hidden mb-4 bg-red-500/20 border border-red-500/50 rounded p-3">
+                        <p class="text-red-400 text-sm flex items-center">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            <span id="loginErrorMessage"></span>
+                        </p>
+                    </div>
+
+                    <button
+                        type="submit"
+                        id="loginSubmitBtn"
+                        class="w-full bg-[#D5D534] text-[#0C0C0C] font-bold py-3 rounded hover:bg-[#D5D534]/80 transition-all flex items-center justify-center gap-2"
+                    >
+                        <span id="loginBtnText">INICIAR SESIÓN</span>
+                        <i id="loginSpinner" class="fas fa-spinner fa-spin hidden"></i>
+                    </button>
+                </form>
+
+                <button
+                    onclick="closeLoginModal()"
+                    class="absolute top-4 right-4 text-white/60 hover:text-white transition-all"
+                >
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
     
     <!-- Navigation Bar -->
     <nav class="w-full fixed top-0 left-0 z-50 glass-effect slide-down border-b border-[#D5D534]/20">
@@ -153,13 +231,26 @@
                     <span class="pricedown text-white text-2xl">Boulevard RP</span>
                 </div>
                 
-                <ul class="hidden md:flex space-x-8">
+                <ul class="hidden md:flex space-x-8 items-center">
                     <li><a href="#" onclick="showSection('home')" class="nav-link text-white font-semibold cursor-pointer">INICIO</a></li>
                     <li><a href="#" onclick="showSection('roleplay')" class="nav-link text-white font-semibold cursor-pointer">ROLEPLAY</a></li>
                     <li><a href="#" onclick="showSection('team')" class="nav-link text-white font-semibold cursor-pointer">STAFF</a></li>
                     <li><a href="#" onclick="showSection('shop')" class="nav-link text-white font-semibold cursor-pointer">TIENDA</a></li>
                     <li><a href="#" onclick="showSection('forum')" class="nav-link text-white font-semibold cursor-pointer">FORO</a></li>
                     <li><a href="#" onclick="showSection('faq')" class="nav-link text-white font-semibold cursor-pointer">FAQ</a></li>
+                    <li>
+                        <button onclick="openLoginModal()" id="loginBtn" class="bg-[#D5D534] text-[#0C0C0C] px-4 py-2 rounded font-bold hover:bg-[#D5D534]/80 transition-all flex items-center gap-2">
+                            <i class="fas fa-user"></i>
+                            <span>INICIAR SESION</span>
+                        </button>
+                        <div id="userInfo" class="hidden items-center gap-2 text-white">
+                            <i class="fas fa-user-circle text-[#D5D534] text-xl"></i>
+                            <span id="usernameDisplay" class="font-semibold"></span>
+                            <button onclick="logout()" class="ml-2 text-white/60 hover:text-[#D5D534]" title="Cerrar sesión">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </li>
                 </ul>
                 
                 <button onclick="toggleMobileMenu()" class="md:hidden text-white">
@@ -177,6 +268,19 @@
                 <li><a href="#" onclick="showSection('shop'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">TIENDA</a></li>
                 <li><a href="#" onclick="showSection('forum'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">FORO</a></li>
                 <li><a href="#" onclick="showSection('faq'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">FAQ</a></li>
+                <li class="pt-2 border-t border-[#D5D534]/20">
+                    <button onclick="openLoginModal(); toggleMobileMenu()" id="loginBtnMobile" class="w-full bg-[#D5D534] text-[#0C0C0C] px-4 py-2 rounded font-bold hover:bg-[#D5D534]/80 transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-user"></i>
+                        <span>INICIAR SESION</span>
+                    </button>
+                    <div id="userInfoMobile" class="hidden items-center justify-center gap-2 text-white py-2">
+                        <i class="fas fa-user-circle text-[#D5D534] text-xl"></i>
+                        <span id="usernameDisplayMobile" class="font-semibold"></span>
+                        <button onclick="logout()" class="ml-2 text-white/60 hover:text-[#D5D534]" title="Cerrar sesión">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -630,9 +734,128 @@
             setTimeout(() => notif.classList.remove('show'), 3000);
         }
 
+        // Login Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.body.style.overflow = '';
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').classList.add('hidden');
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('passwordToggleIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            const errorMessage = document.getElementById('loginErrorMessage');
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            const btnText = document.getElementById('loginBtnText');
+            const spinner = document.getElementById('loginSpinner');
+
+            // Hide previous errors
+            errorDiv.classList.add('hidden');
+
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.textContent = 'INICIANDO...';
+            spinner.classList.remove('hidden');
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Store user info in sessionStorage
+                    sessionStorage.setItem('user', JSON.stringify(data.user));
+                    updateLoginUI(data.user.username);
+                    closeLoginModal();
+                } else {
+                    errorMessage.textContent = data.message || 'Error al iniciar sesión';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorMessage.textContent = 'Error de conexión. Intenta de nuevo.';
+                errorDiv.classList.remove('hidden');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.textContent = 'INICIAR SESIÓN';
+                spinner.classList.add('hidden');
+            }
+        }
+
+        function updateLoginUI(username) {
+            // Desktop
+            document.getElementById('loginBtn').classList.add('hidden');
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('userInfo').classList.add('flex');
+            document.getElementById('usernameDisplay').textContent = username;
+
+            // Mobile
+            document.getElementById('loginBtnMobile').classList.add('hidden');
+            document.getElementById('userInfoMobile').classList.remove('hidden');
+            document.getElementById('userInfoMobile').classList.add('flex');
+            document.getElementById('usernameDisplayMobile').textContent = username;
+        }
+
+        function logout() {
+            sessionStorage.removeItem('user');
+
+            // Desktop
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('userInfo').classList.remove('flex');
+
+            // Mobile
+            document.getElementById('loginBtnMobile').classList.remove('hidden');
+            document.getElementById('userInfoMobile').classList.add('hidden');
+            document.getElementById('userInfoMobile').classList.remove('flex');
+        }
+
+        function checkExistingSession() {
+            const user = sessionStorage.getItem('user');
+            if (user) {
+                try {
+                    const userData = JSON.parse(user);
+                    updateLoginUI(userData.username);
+                } catch (e) {
+                    sessionStorage.removeItem('user');
+                }
+            }
+        }
+
         // Iniciar en Home
         document.addEventListener('DOMContentLoaded', () => {
             showSection('home');
+            checkExistingSession();
         });
     </script>
 </body>

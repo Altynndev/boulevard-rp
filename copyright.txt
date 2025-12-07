@@ -1,0 +1,15 @@
+Desarrolladores: Equipo de SA-MP Hispano.
+ 
+Agradecimientos: SA-MP Hispano, SA-MP PawnScript.
+
+Enlaces de interés:
+● Foro PawnScript: https://forum.samp.es/
+● Documentación: https://docs.samp.es/
+● Colaboradores: https://www.samp.es/p/colaboradores.html
+● Guilded: https://www.guilded.gg/samp
+● Discord: https://discord.gg/y8gY7bujeT
+● Discord PawnScript: https://discord.gg/RWQH8b6VV6
+
+www.samp.es y el contenido del presente documento no están afiliados a Rockstar Games, Rockstar North o Take-Two Interactive Software Inc. 
+
+Grand Theft Auto y Grand Theft Auto: San Andreas son marcas comerciales registradas de Take-Two Interactive Software Inc.

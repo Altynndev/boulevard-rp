@@ -5,11 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boulevard Roleplay</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        @font-face {
+            font-family: 'Pricedown';
+            src: url('./fonts/pricedown.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
         body::-webkit-scrollbar {width: 8px;}
-        body::-webkit-scrollbar-thumb {background: linear-gradient(180deg, #00cba9, #0ea5e9);border-radius: 10px;}
-        body::-webkit-scrollbar-track {background: #1c1917;}
+        body::-webkit-scrollbar-thumb {background: #D5D534;border-radius: 10px;}
+        body::-webkit-scrollbar-track {background: #0C0C0C;}
         
         @keyframes fadeIn {
             from {opacity: 0;transform: translateY(20px);}
@@ -17,55 +24,116 @@
         }
         
         @keyframes slideDown {
-            from {opacity: 0;transform: translateY(-100%);}
+            from {opacity: 0;transform: translateY(-20px);}
             to {opacity: 1;transform: translateY(0);}
         }
         
         @keyframes pulse-glow {
-            0%, 100% {box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);}
-            50% {box-shadow: 0 0 40px rgba(99, 102, 241, 0.8), 0 0 60px rgba(99, 102, 241, 0.6);}
-        }
-        
-        @keyframes float {
-            0%, 100% {transform: translateY(0px);}
-            50% {transform: translateY(-20px);}
+            0%, 100% {box-shadow: 0 0 20px rgba(213, 213, 52, 0.3);}
+            50% {box-shadow: 0 0 40px rgba(213, 213, 52, 0.6), 0 0 60px rgba(213, 213, 52, 0.4);}
         }
         
         .fade-in {animation: fadeIn 0.8s ease-out forwards;}
         .slide-down {animation: slideDown 0.5s ease-out forwards;}
         .pulse-glow {animation: pulse-glow 2s infinite;}
-        .float {animation: float 3s ease-in-out infinite;}
         
-        .nav-link {position: relative;transition: all 0.3s;}
-        .nav-link::after {content: '';position: absolute;bottom: -5px;left: 0;width: 0;height: 2px;background: linear-gradient(90deg, #00cba9, #0ea5e9);transition: width 0.3s;}
+        .pricedown {font-family: 'Pricedown', sans-serif;}
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s;
+            padding-bottom: 8px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #D5D534;
+            transition: width 0.3s;
+        }
         .nav-link:hover::after {width: 100%;}
+        .nav-link:hover {color: #D5D534;}
         
-        .bg-image-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-size: cover;background-position: center;opacity: 0.15;z-index: 0;pointer-events: none;}
+        .glass-effect {
+            background: rgba(12, 12, 12, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(213, 213, 52, 0.1);
+        }
         
-        .content-wrapper {position: relative;z-index: 1;}
-        
-        .glass-effect {background: rgba(28, 25, 23, 0.8);backdrop-filter: blur(10px);border: 1px solid rgba(255, 255, 255, 0.1);}
-        
-        .section-fade {opacity: 0;transition: opacity 0.3s ease-out;}
+        .section-fade {
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+        }
         .section-fade.active {opacity: 1;}
         
-        .notification {position: fixed;top: -100px;left: 50%;transform: translateX(-50%);z-index: 9999;transition: top 0.5s ease-out;min-width: 400px;}
+        .notification {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            transition: top 0.5s ease-out;
+            min-width: 400px;
+        }
         .notification.show {top: 20px;}
+        
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(213, 213, 52, 0.1);
+            border: 2px solid #D5D534;
+            border-radius: 8px;
+            margin: 0 auto 16px;
+        }
+        
+        .btn-primary {
+            background: #D5D534;
+            color: #0C0C0C;
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .btn-primary:hover {
+            background: transparent;
+            color: #D5D534;
+            border-color: #D5D534;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #FFFFFF;
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 4px;
+            border: 2px solid #FFFFFF;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover {
+            background: #FFFFFF;
+            color: #0C0C0C;
+            transform: translateY(-2px);
+        }
         
         @media (max-width: 640px) {
             .notification {min-width: 90%;left: 5%;transform: none;}
         }
     </style>
 </head>
-<body class="w-full bg-stone-900 relative overflow-x-hidden">
-    <!-- Background Image Overlay -->
-    <div id="bgOverlay" class="bg-image-overlay"></div>
-    
+<body class="w-full bg-[#0C0C0C] relative overflow-x-hidden">
     <!-- Notification -->
     <div id="notification" class="notification">
-        <div class="glass-effect rounded-lg shadow-2xl p-4 border-l-4 border-amber-500">
+        <div class="glass-effect rounded-lg shadow-2xl p-4 border-l-4 border-[#D5D534]">
             <div class="flex items-center">
-                <box-icon name='error' type='solid' color='#f59e0b' size='md'></box-icon>
+                <i class="fas fa-exclamation-triangle text-[#D5D534] text-3xl"></i>
                 <div class="ml-3">
                     <h3 class="text-white font-bold">¡Servidor en Construcción!</h3>
                     <p class="text-white/80 text-sm">El servidor aún no ha abierto. ¡Únete al Discord para no perderte las novedades!</p>
@@ -75,116 +143,121 @@
     </div>
     
     <!-- Navigation Bar -->
-    <nav class="w-full fixed top-0 left-0 z-50 glass-effect slide-down">
+    <nav class="w-full fixed top-0 left-0 z-50 glass-effect slide-down border-b border-[#D5D534]/20">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
-                <div class="flex items-center space-x-2">
-                    <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-500 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">B</span>
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-[#D5D534] rounded flex items-center justify-center">
+                        <span class="pricedown text-[#0C0C0C] text-2xl">B</span>
                     </div>
-                    <span class="text-white font-bold text-xl">Boulevard RP</span>
+                    <span class="pricedown text-white text-2xl">Boulevard RP</span>
                 </div>
                 
-                <ul class="hidden md:flex space-x-6">
-                    <li><a href="#" onclick="showSection('home')" class="nav-link text-white font-semibold hover:text-teal-400 cursor-pointer">Inicio</a></li>
-                    <li><a href="#" onclick="showSection('roleplay')" class="nav-link text-white font-semibold hover:text-teal-400 cursor-pointer">Roleplay</a></li>
-                    <li><a href="#" onclick="showSection('team')" class="nav-link text-white font-semibold hover:text-teal-400 cursor-pointer">Staff</a></li>
-                    <li><a href="#" onclick="showSection('shop')" class="nav-link text-white font-semibold hover:text-teal-400 cursor-pointer">Tienda</a></li>
-                    <li><a href="#" onclick="showSection('forum')" class="nav-link text-white font-semibold hover:text-teal-400 cursor-pointer">Foro</a></li>
-                    <li><a href="#" onclick="showSection('faq')" class="nav-link text-white font-semibold hover:text-teal-400 cursor-pointer">FAQ</a></li>
+                <ul class="hidden md:flex space-x-8">
+                    <li><a href="#" onclick="showSection('home')" class="nav-link text-white font-semibold cursor-pointer">INICIO</a></li>
+                    <li><a href="#" onclick="showSection('roleplay')" class="nav-link text-white font-semibold cursor-pointer">ROLEPLAY</a></li>
+                    <li><a href="#" onclick="showSection('team')" class="nav-link text-white font-semibold cursor-pointer">STAFF</a></li>
+                    <li><a href="#" onclick="showSection('shop')" class="nav-link text-white font-semibold cursor-pointer">TIENDA</a></li>
+                    <li><a href="#" onclick="showSection('forum')" class="nav-link text-white font-semibold cursor-pointer">FORO</a></li>
+                    <li><a href="#" onclick="showSection('faq')" class="nav-link text-white font-semibold cursor-pointer">FAQ</a></li>
                 </ul>
                 
                 <button onclick="toggleMobileMenu()" class="md:hidden text-white">
-                    <box-icon name='menu' color='#ffffff' size='md'></box-icon>
+                    <i class="fas fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-stone-800/95 backdrop-blur-lg">
+        <div id="mobileMenu" class="hidden md:hidden bg-[#0C0C0C]/95 backdrop-blur-lg border-t border-[#D5D534]/20">
             <ul class="flex flex-col space-y-2 p-4">
-                <li><a href="#" onclick="showSection('home'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-teal-400">Inicio</a></li>
-                <li><a href="#" onclick="showSection('roleplay'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-teal-400">Roleplay</a></li>
-                <li><a href="#" onclick="showSection('team'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-teal-400">Staff</a></li>
-                <li><a href="#" onclick="showSection('shop'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-teal-400">Tienda</a></li>
-                <li><a href="#" onclick="showSection('forum'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-teal-400">Foro</a></li>
-                <li><a href="#" onclick="showSection('faq'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-teal-400">FAQ</a></li>
+                <li><a href="#" onclick="showSection('home'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">INICIO</a></li>
+                <li><a href="#" onclick="showSection('roleplay'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">ROLEPLAY</a></li>
+                <li><a href="#" onclick="showSection('team'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">STAFF</a></li>
+                <li><a href="#" onclick="showSection('shop'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">TIENDA</a></li>
+                <li><a href="#" onclick="showSection('forum'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">FORO</a></li>
+                <li><a href="#" onclick="showSection('faq'); toggleMobileMenu()" class="block text-white font-semibold py-2 hover:text-[#D5D534]">FAQ</a></li>
             </ul>
         </div>
     </nav>
     
-    <div class="content-wrapper pt-20">
+    <div class="pt-20">
         <!-- HOME SECTION -->
         <section id="homeSection" class="section-fade active min-h-screen">
-            <div class="container mx-auto px-4 py-12">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div class="fade-in">
-                        <h1 class="text-6xl font-extrabold text-white mb-4">
-                            Boulevard <span class="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">Roleplay</span>
-                        </h1>
-                        <p class="text-xl text-white/80 mb-8">¡Vive la experiencia más realista de roleplay en SA-MP! Únete a nuestra comunidad y forma parte de historias increíbles.</p>
-                        
-                        <div class="flex flex-wrap gap-4 mb-8">
-                            <a href="/downloads/sa-mp-0.3.DL-R1-install.exe" class="flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 rounded-lg text-white font-bold transition-all transform hover:scale-105 shadow-lg">
-                                <box-icon name='cloud-download' color='#ffffff'></box-icon>
-                                <span class="ml-2">Descargar SA-MP</span>
-                            </a>
-                            <a id="discordBtn" href="https://discord.gg/awFXWdD2EW" target="_blank" class="flex items-center px-6 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 rounded-lg text-white font-bold transition-all transform hover:scale-105 shadow-lg">
-                                <box-icon name='discord-alt' type='logo' color='#ffffff'></box-icon>
-                                <span class="ml-2">Discord</span>
-                            </a>
-                            <button onclick="showConnectNotification()" class="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 rounded-lg text-white font-bold transition-all transform hover:scale-105 shadow-lg">
-                                <box-icon name='game' color='#ffffff'></box-icon>
-                                <span class="ml-2">Conectar</span>
-                            </button>
-                        </div>
-                        
-                        <!-- Background Selector -->
-                        <div class="glass-effect p-4 rounded-lg">
-                            <h3 class="text-white font-bold mb-3 flex items-center">
-                                <box-icon name='palette' color='#ffffff' class="mr-2"></box-icon>
-                                Personalizar Fondo
-                            </h3>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                <button onclick="changeBg('https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1920')" class="h-16 rounded bg-cover bg-center border-2 border-white/20 hover:border-teal-400 transition-all" style="background-image: url('https://images.unsplash.com/photo-1514565131-fce0801e5785?w=400')"></button>
-                                <button onclick="changeBg('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1920')" class="h-16 rounded bg-cover bg-center border-2 border-white/20 hover:border-teal-400 transition-all" style="background-image: url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400')"></button>
-                                <button onclick="changeBg('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920')" class="h-16 rounded bg-cover bg-center border-2 border-white/20 hover:border-teal-400 transition-all" style="background-image: url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400')"></button>
-                                <button onclick="changeBg('')" class="h-16 rounded bg-stone-900 border-2 border-white/20 hover:border-teal-400 transition-all flex items-center justify-center">
-                                    <span class="text-white text-xs">Sin fondo</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            <div class="container mx-auto px-4 py-16">
+                <!-- Hero Section -->
+                <div class="text-center mb-20 fade-in">
+                    <h1 class="pricedown text-7xl md:text-9xl text-white mb-6">
+                        Boulevard <span class="text-[#D5D534]">Roleplay</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto">
+                        Vive la experiencia más realista de roleplay en SA-MP. Únete a nuestra comunidad y forma parte de historias increíbles.
+                    </p>
                     
-                    <div class="hidden md:block float">
-                        <img src="/images/lester.png" alt="Boulevard Roleplay" class="w-full rounded-lg shadow-2xl">
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <a href="https://gta-multiplayer.cz/downloads/sa-mp-0.3.7-R5-2-MP-install.exe" class="btn-primary flex items-center gap-2">
+                            <i class="fas fa-download"></i>
+                            <span>DESCARGAR SA-MP</span>
+                        </a>
+                        <a id="discordBtn" href="https://dsc.gg/boulevard-rp" target="_blank" class="btn-secondary flex items-center gap-2">
+                            <i class="fab fa-discord"></i>
+                            <span>DISCORD</span>
+                        </a>
+                        <button onclick="showConnectNotification()" class="btn-secondary flex items-center gap-2">
+                            <i class="fas fa-gamepad"></i>
+                            <span>CONECTAR</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Stats Section -->
+                <div class="grid md:grid-cols-4 gap-6 mb-20">
+                    <div class="glass-effect p-6 text-center hover:border-[#D5D534] transition-all">
+                        <i class="fas fa-users text-5xl text-[#D5D534] mb-4"></i>
+                        <h3 class="pricedown text-4xl text-white mb-2">500+</h3>
+                        <p class="text-white/70">Jugadores Activos</p>
+                    </div>
+                    <div class="glass-effect p-6 text-center hover:border-[#D5D534] transition-all">
+                        <i class="fas fa-building text-5xl text-[#62A64C] mb-4"></i>
+                        <h3 class="pricedown text-4xl text-white mb-2">25+</h3>
+                        <p class="text-white/70">Facciones Oficiales</p>
+                    </div>
+                    <div class="glass-effect p-6 text-center hover:border-[#D5D534] transition-all">
+                        <i class="fas fa-car text-5xl text-[#0A75AD] mb-4"></i>
+                        <h3 class="pricedown text-4xl text-white mb-2">200+</h3>
+                        <p class="text-white/70">Vehículos Únicos</p>
+                    </div>
+                    <div class="glass-effect p-6 text-center hover:border-[#D5D534] transition-all">
+                        <i class="fas fa-trophy text-5xl text-[#CB3126] mb-4"></i>
+                        <h3 class="pricedown text-4xl text-white mb-2">100%</h3>
+                        <p class="text-white/70">Roleplay Realista</p>
                     </div>
                 </div>
                 
                 <!-- Features -->
-                <div class="grid md:grid-cols-3 gap-6 mt-16">
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform fade-in">
-                        <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
-                            <box-icon name='group' color='#ffffff' size='md'></box-icon>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-effect p-8 hover:border-[#D5D534] transition-all fade-in">
+                        <div class="icon-box">
+                            <i class="fas fa-users text-4xl text-[#D5D534]"></i>
                         </div>
-                        <h3 class="text-white font-bold text-xl mb-2">Comunidad Activa</h3>
-                        <p class="text-white/70">Únete a cientos de jugadores que disfrutan del roleplay de calidad todos los días.</p>
+                        <h3 class="pricedown text-2xl text-white mb-3 text-center">Comunidad Activa</h3>
+                        <p class="text-white/70 text-center">Únete a cientos de jugadores que disfrutan del roleplay de calidad todos los días.</p>
                     </div>
                     
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform fade-in" style="animation-delay: 0.2s">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
-                            <box-icon name='shield-alt-2' type='solid' color='#ffffff' size='md'></box-icon>
+                    <div class="glass-effect p-8 hover:border-[#62A64C] transition-all fade-in" style="animation-delay: 0.2s">
+                        <div class="icon-box" style="border-color: #62A64C; background: rgba(98, 166, 76, 0.1);">
+                            <i class="fas fa-shield-alt text-4xl text-[#62A64C]"></i>
                         </div>
-                        <h3 class="text-white font-bold text-xl mb-2">Staff Dedicado</h3>
-                        <p class="text-white/70">Equipo administrativo comprometido con la mejor experiencia de juego.</p>
+                        <h3 class="pricedown text-2xl text-white mb-3 text-center">Staff Dedicado</h3>
+                        <p class="text-white/70 text-center">Equipo administrativo comprometido con la mejor experiencia de juego.</p>
                     </div>
                     
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform fade-in" style="animation-delay: 0.4s">
-                        <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
-                            <box-icon name='star' type='solid' color='#ffffff' size='md'></box-icon>
+                    <div class="glass-effect p-8 hover:border-[#CB3126] transition-all fade-in" style="animation-delay: 0.4s">
+                        <div class="icon-box" style="border-color: #CB3126; background: rgba(203, 49, 38, 0.1);">
+                            <i class="fas fa-star text-4xl text-[#CB3126]"></i>
                         </div>
-                        <h3 class="text-white font-bold text-xl mb-2">Roleplay de Calidad</h3>
-                        <p class="text-white/70">Sistema de roleplay realista con reglas claras y ambiente inmersivo.</p>
+                        <h3 class="pricedown text-2xl text-white mb-3 text-center">Roleplay de Calidad</h3>
+                        <p class="text-white/70 text-center">Sistema de roleplay realista con reglas claras y ambiente inmersivo.</p>
                     </div>
                 </div>
             </div>
@@ -192,185 +265,163 @@
         
         <!-- ROLEPLAY SECTION -->
         <section id="roleplaySection" class="section-fade min-h-screen hidden">
-            <div class="container mx-auto px-4 py-12">
-                <h1 class="text-5xl font-extrabold text-white mb-8 text-center">Guía de Roleplay</h1>
+            <div class="container mx-auto px-4 py-16">
+                <h1 class="pricedown text-6xl text-white mb-12 text-center">Guia de <span class="text-[#D5D534]">Roleplay</span></h1>
                 
-                <div class="grid md:grid-cols-3 gap-4 mb-8">
-                    <button onclick="showRoleplayContent('entornos')" class="rp-tab glass-effect p-4 rounded-lg text-white font-bold hover:bg-teal-500/20 transition-all active">
-                        <box-icon name='world' color='#ffffff' class="mb-2"></box-icon>
-                        <span>Entornos</span>
+                <div class="grid md:grid-cols-3 gap-4 mb-12">
+                    <button onclick="showRoleplayContent('entornos')" class="rp-tab glass-effect p-6 text-white font-bold hover:border-[#D5D534] transition-all active border-[#D5D534]">
+                        <i class="fas fa-globe text-3xl text-[#D5D534] mb-3"></i>
+                        <span class="block pricedown text-xl">Entornos</span>
                     </button>
-                    <button onclick="showRoleplayContent('interpretacion')" class="rp-tab glass-effect p-4 rounded-lg text-white font-bold hover:bg-teal-500/20 transition-all">
-                        <box-icon name='user-voice' color='#ffffff' class="mb-2"></box-icon>
-                        <span>Interpretación</span>
+                    <button onclick="showRoleplayContent('interpretacion')" class="rp-tab glass-effect p-6 text-white font-bold hover:border-[#62A64C] transition-all border-transparent">
+                        <i class="fas fa-user-alt text-3xl text-[#62A64C] mb-3"></i>
+                        <span class="block pricedown text-xl">Interpretacion</span>
                     </button>
-                    <button onclick="showRoleplayContent('situaciones')" class="rp-tab glass-effect p-4 rounded-lg text-white font-bold hover:bg-teal-500/20 transition-all">
-                        <box-icon name='book-content' color='#ffffff' class="mb-2"></box-icon>
-                        <span>Situaciones</span>
+                    <button onclick="showRoleplayContent('situaciones')" class="rp-tab glass-effect p-6 text-white font-bold hover:border-[#0A75AD] transition-all border-transparent">
+                        <i class="fas fa-book text-3xl text-[#0A75AD] mb-3"></i>
+                        <span class="block pricedown text-xl">Situaciones</span>
                     </button>
                 </div>
                 
                 <!-- Entornos Content -->
-                <div id="entornosContent" class="rp-content glass-effect p-8 rounded-lg">
-                    <h2 class="text-3xl font-bold text-white mb-6">Comandos de Entorno</h2>
+                <div id="entornosContent" class="rp-content glass-effect p-8">
+                    <h2 class="pricedown text-4xl text-white mb-8">Comandos de Entorno</h2>
                     
-                    <div class="space-y-6">
-                        <div class="border-l-4 border-teal-500 pl-4">
-                            <h3 class="text-2xl font-bold text-teal-400 mb-2">/do - Entorno Personal</h3>
-                            <p class="text-white/80 mb-3">Describe el entorno inmediato alrededor de tu personaje. Lo que otros pueden ver, oler o percibir cerca de ti.</p>
-                            <div class="bg-stone-900/50 p-4 rounded">
-                                <p class="text-emerald-400 font-mono">Ejemplo: /do Se observarían manchas de sangre en la camisa del sujeto.</p>
-                                <p class="text-emerald-400 font-mono">Ejemplo: /do El aroma de perfume caro emanaría de la persona.</p>
-                                <p class="text-emerald-400 font-mono">Ejemplo: /do Se escucharía el tintineo de llaves en su bolsillo.</p>
+                    <div class="space-y-8">
+                        <div class="border-l-4 border-[#D5D534] pl-6">
+                            <h3 class="pricedown text-3xl text-[#D5D534] mb-3">/do - Entorno Personal</h3>
+                            <p class="text-white/80 mb-4">Describe el entorno inmediato alrededor de tu personaje. Lo que otros pueden ver, oler o percibir cerca de ti.</p>
+                            <div class="bg-[#0C0C0C]/50 p-4 rounded border border-[#D5D534]/20">
+                                <p class="text-[#D5D534] font-mono mb-2">Ejemplo: /do Se observarían manchas de sangre en la camisa del sujeto.</p>
+                                <p class="text-[#D5D534] font-mono mb-2">Ejemplo: /do El aroma de perfume caro emanaría de la persona.</p>
+                                <p class="text-[#D5D534] font-mono">Ejemplo: /do Se escucharía el tintineo de llaves en su bolsillo.</p>
                             </div>
                         </div>
                         
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h3 class="text-2xl font-bold text-blue-400 mb-2">/en - Entorno General</h3>
-                            <p class="text-white/80 mb-3">Describe el entorno general del lugar. Clima, atmósfera, o detalles del escenario que afectan a todos.</p>
-                            <div class="bg-stone-900/50 p-4 rounded">
-                                <p class="text-sky-400 font-mono">Ejemplo: /en El ambiente sería tenso, con miradas cautelosas entre los presentes.</p>
-                                <p class="text-sky-400 font-mono">Ejemplo: /en Se escucharía música suave de fondo en el local.</p>
-                                <p class="text-sky-400 font-mono">Ejemplo: /en Una ligera brisa fría recorrería el callejón oscuro.</p>
+                        <div class="border-l-4 border-[#0A75AD] pl-6">
+                            <h3 class="pricedown text-3xl text-[#0A75AD] mb-3">/en - Entorno General</h3>
+                            <p class="text-white/80 mb-4">Describe el entorno general del lugar. Clima, atmósfera, o detalles del escenario que afectan a todos.</p>
+                            <div class="bg-[#0C0C0C]/50 p-4 rounded border border-[#0A75AD]/20">
+                                <p class="text-[#0A75AD] font-mono mb-2">Ejemplo: /en El ambiente sería tenso, con miradas cautelosas entre los presentes.</p>
+                                <p class="text-[#0A75AD] font-mono mb-2">Ejemplo: /en Se escucharía música suave de fondo en el local.</p>
+                                <p class="text-[#0A75AD] font-mono">Ejemplo: /en Una ligera brisa fría recorrería el callejón oscuro.</p>
                             </div>
                         </div>
                         
-                        <div class="border-l-4 border-purple-500 pl-4">
-                            <h3 class="text-2xl font-bold text-purple-400 mb-2">/dop - Entorno de Puerta</h3>
-                            <p class="text-white/80 mb-3">Describe lo que sucede del otro lado de una puerta o en el exterior de un lugar cerrado.</p>
-                            <div class="bg-stone-900/50 p-4 rounded">
-                                <p class="text-purple-400 font-mono">Ejemplo: /dop Se escucharían pasos apresurados acercándose por el pasillo.</p>
-                                <p class="text-purple-400 font-mono">Ejemplo: /dop Del otro lado se percibirían voces discutiendo acaloradamente.</p>
-                                <p class="text-purple-400 font-mono">Ejemplo: /dop Afuera se vería un vehículo negro estacionado.</p>
+                        <div class="border-l-4 border-[#62A64C] pl-6">
+                            <h3 class="pricedown text-3xl text-[#62A64C] mb-3">/dop - Entorno de Puerta</h3>
+                            <p class="text-white/80 mb-4">Describe lo que sucede del otro lado de una puerta o en el exterior de un lugar cerrado.</p>
+                            <div class="bg-[#0C0C0C]/50 p-4 rounded border border-[#62A64C]/20">
+                                <p class="text-[#62A64C] font-mono mb-2">Ejemplo: /dop Se escucharían pasos apresurados acercándose por el pasillo.</p>
+                                <p class="text-[#62A64C] font-mono mb-2">Ejemplo: /dop Del otro lado se percibirían voces discutiendo acaloradamente.</p>
+                                <p class="text-[#62A64C] font-mono">Ejemplo: /dop Afuera se vería un vehículo negro estacionado.</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Interpretacion Content -->
-                <div id="interpretacionContent" class="rp-content glass-effect p-8 rounded-lg hidden">
-                    <h2 class="text-3xl font-bold text-white mb-6">Comandos de Interpretación</h2>
+                <div id="interpretacionContent" class="rp-content glass-effect p-8 hidden">
+                    <h2 class="pricedown text-4xl text-white mb-8">Comandos de Interpretacion</h2>
                     
-                    <div class="space-y-6">
-                        <div class="border-l-4 border-orange-500 pl-4">
-                            <h3 class="text-2xl font-bold text-orange-400 mb-2">/me - Acción Personal</h3>
-                            <p class="text-white/80 mb-3">Describe las acciones físicas que realiza tu personaje. Usa tercera persona.</p>
-                            <div class="bg-stone-900/50 p-4 rounded">
-                                <p class="text-orange-400 font-mono">Ejemplo: /me sacaría lentamente su identificación del bolsillo.</p>
-                                <p class="text-orange-400 font-mono">Ejemplo: /me observaría detenidamente el rostro de la persona.</p>
-                                <p class="text-orange-400 font-mono">Ejemplo: /me encendería un cigarrillo con manos temblorosas.</p>
+                    <div class="space-y-8">
+                        <div class="border-l-4 border-[#CB3126] pl-6">
+                            <h3 class="pricedown text-3xl text-[#CB3126] mb-3">/me - Accion Personal</h3>
+                            <p class="text-white/80 mb-4">Describe las acciones físicas que realiza tu personaje. Usa tercera persona.</p>
+                            <div class="bg-[#0C0C0C]/50 p-4 rounded border border-[#CB3126]/20">
+                                <p class="text-[#CB3126] font-mono mb-2">Ejemplo: /me sacaría lentamente su identificación del bolsillo.</p>
+                                <p class="text-[#CB3126] font-mono mb-2">Ejemplo: /me observaría detenidamente el rostro de la persona.</p>
+                                <p class="text-[#CB3126] font-mono">Ejemplo: /me encendería un cigarrillo con manos temblorosas.</p>
                             </div>
-                            <div class="bg-amber-900/20 border border-amber-500/50 p-4 rounded mt-3">
-                                <p class="text-amber-300 font-semibold">💡 Consejo: Sé descriptivo pero conciso. Evita acciones imposibles o exageradas.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="border-l-4 border-pink-500 pl-4">
-                            <h3 class="text-2xl font-bold text-pink-400 mb-2">/ame - Acción Visible</h3>
-                            <p class="text-white/80 mb-3">Muestra una acción breve sobre tu cabeza, visible para todos cercanos. Ideal para acciones rápidas.</p>
-                            <div class="bg-stone-900/50 p-4 rounded">
-                                <p class="text-pink-400 font-mono">Ejemplo: /ame Encendería el motor del vehículo.</p>
-                                <p class="text-pink-400 font-mono">Ejemplo: /ame Teclearía en su celular.</p>
-                                <p class="text-pink-400 font-mono">Ejemplo: /ame Revisaría su reloj.</p>
+                            <div class="bg-[#D5D534]/10 border border-[#D5D534]/30 p-4 rounded mt-4">
+                                <p class="text-[#D5D534] font-semibold"><i class="fas fa-lightbulb mr-2"></i>Consejo: Sé descriptivo pero conciso. Evita acciones imposibles o exageradas.</p>
                             </div>
                         </div>
                         
-                        <div class="border-l-4 border-cyan-500 pl-4">
-                            <h3 class="text-2xl font-bold text-cyan-400 mb-2">Interpretación Realista</h3>
-                            <p class="text-white/80 mb-3">Guía para interpretar situaciones de manera realista:</p>
-                            <ul class="space-y-2 text-white/70">
+                        <div class="border-l-4 border-[#D5D534] pl-6">
+                            <h3 class="pricedown text-3xl text-[#D5D534] mb-3">/ame - Accion Visible</h3>
+                            <p class="text-white/80 mb-4">Muestra una acción breve sobre tu cabeza, visible para todos cercanos. Ideal para acciones rápidas.</p>
+                            <div class="bg-[#0C0C0C]/50 p-4 rounded border border-[#D5D534]/20">
+                                <p class="text-[#D5D534] font-mono mb-2">Ejemplo: /ame Encendería el motor del vehículo.</p>
+                                <p class="text-[#D5D534] font-mono mb-2">Ejemplo: /ame Teclearía en su celular.</p>
+                                <p class="text-[#D5D534] font-mono">Ejemplo: /ame Revisaría su reloj.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-[#0A75AD] pl-6">
+                            <h3 class="pricedown text-3xl text-[#0A75AD] mb-3">Interpretacion Realista</h3>
+                            <p class="text-white/80 mb-4">Guía para interpretar situaciones de manera realista:</p>
+                            <ul class="space-y-3 text-white/70">
                                 <li class="flex items-start">
-                                    <span class="text-cyan-400 mr-2">✓</span>
-                                    <span><strong>Dolor:</strong> Si te disparan o golpean, interpreta el dolor. Tu personaje no es invencible.</span>
+                                    <i class="fas fa-check text-[#62A64C] mr-3 mt-1"></i>
+                                    <span><strong class="text-white">Dolor:</strong> Si te disparan o golpean, interpreta el dolor. Tu personaje no es invencible.</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <span class="text-cyan-400 mr-2">✓</span>
-                                    <span><strong>Miedo:</strong> En situaciones peligrosas, es normal tener miedo. Actúa en consecuencia.</span>
+                                    <i class="fas fa-check text-[#62A64C] mr-3 mt-1"></i>
+                                    <span><strong class="text-white">Miedo:</strong> En situaciones peligrosas, es normal tener miedo. Actúa en consecuencia.</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <span class="text-cyan-400 mr-2">✓</span>
-                                    <span><strong>Emociones:</strong> Interpreta las emociones de tu personaje según la situación.</span>
+                                    <i class="fas fa-check text-[#62A64C] mr-3 mt-1"></i>
+                                    <span><strong class="text-white">Emociones:</strong> Interpreta las emociones de tu personaje según la situación.</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <span class="text-cyan-400 mr-2">✓</span>
-                                    <span><strong>Coherencia:</strong> Mantén la coherencia en la personalidad de tu personaje.</span>
+                                    <i class="fas fa-check text-[#62A64C] mr-3 mt-1"></i>
+                                    <span><strong class="text-white">Coherencia:</strong> Mantén la coherencia en la personalidad de tu personaje.</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Situaciones Content -->
-                <div id="situacionesContent" class="rp-content glass-effect p-8 rounded-lg hidden">
-                    <h2 class="text-3xl font-bold text-white mb-6">Situaciones y Reacciones Realistas</h2>
+                <div id="situacionesContent" class="rp-content glass-effect p-8 hidden">
+                    <h2 class="pricedown text-4xl text-white mb-8">Situaciones y Reacciones Realistas</h2>
                     
                     <div class="space-y-6">
-                        <div class="glass-effect p-6 rounded-lg">
-                            <h3 class="text-2xl font-bold text-red-400 mb-3 flex items-center">
-                                <box-icon name='error-circle' type='solid' color='#f87171' class="mr-2"></box-icon>
-                                Situación de Robo
+                        <div class="glass-effect p-6 border-l-4 border-[#CB3126]">
+                            <h3 class="pricedown text-2xl text-[#CB3126] mb-3 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-3"></i>
+                                Situacion de Robo
                             </h3>
                             <div class="space-y-3 text-white/80">
                                 <p><strong class="text-white">Cómo reaccionar:</strong></p>
                                 <ul class="space-y-2 ml-4">
-                                    <li>• Valorar tu vida por encima de tus pertenencias</li>
-                                    <li>• Mostrar nerviosismo y miedo realista</li>
-                                    <li>• No intentar ser héroe sin razón lógica</li>
-                                    <li>• Interpretar el shock post-trauma después</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>Valorar tu vida por encima de tus pertenencias.</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>Mostrar nerviosismo y miedo realista.</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>No intentar ser héroe sin razón lógica (PG).</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>Interpretar el shock post-trauma después.</li>
                                 </ul>
-                                <div class="bg-red-900/20 border border-red-500/50 p-3 rounded mt-3">
-                                    <p class="text-red-300">❌ Evitar: Actuar como si nada después de ser robado a mano armada.</p>
+                                <div class="bg-[#CB3126]/10 border border-[#CB3126]/30 p-3 rounded mt-3">
+                                    <p class="text-[#CB3126]"><i class="fas fa-times mr-2"></i>Evitar: Actuar como si nada después de ser robado a mano armada.</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="glass-effect p-6 rounded-lg">
-                            <h3 class="text-2xl font-bold text-blue-400 mb-3 flex items-center">
-                                <box-icon name='plus-medical' type='solid' color='#60a5fa' class="mr-2"></box-icon>
-                                Situación Médica
-                            </h3>
-                            <div class="space-y-3 text-white/80">
-                                <p><strong class="text-white">Cómo reaccionar:</strong></p>
-                                <ul class="space-y-2 ml-4">
-                                    <li>• Interpretar heridas y dolor de forma realista</li>
-                                    <li>• No correr si tienes heridas graves</li>
-                                    <li>• Seguir indicaciones médicas del roleplay</li>
-                                    <li>• Tiempo de recuperación según gravedad</li>
-                                </ul>
-                                <div class="bg-blue-900/20 border border-blue-500/50 p-3 rounded mt-3">
-                                    <p class="text-blue-300">✓ Buena práctica: Interpretar secuelas temporales después de heridas graves.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="glass-effect p-6 rounded-lg">
-                            <h3 class="text-2xl font-bold text-yellow-400 mb-3 flex items-center">
-                                <box-icon name='car' type='solid' color='#facc15' class="mr-2"></box-icon>
-                                Accidente de Tráfico
-                            </h3>
-                            <div class="space-y-3 text-white/80">
-                                <p><strong class="text-white">Cómo reaccionar:</strong></p>
-                                <ul class="space-y-2 ml-4">
-                                    <li>• Interpretar aturdimiento después del impacto</li>
-                                    <li>• Revisar estado propio y de otros involucrados</li>
-                                    <li>• Llamar a servicios de emergencia si es necesario</li>
-                                    <li>• Intercambiar información con otros conductores</li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <div class="glass-effect p-6 rounded-lg">
-                            <h3 class="text-2xl font-bold text-purple-400 mb-3 flex items-center">
-                                <box-icon name='building' type='solid' color='#c084fc' class="mr-2"></box-icon>
+                        <div class="glass-effect p-6 border-l-4 border-[#62A64C]">
+                            <h3 class="pricedown text-2xl text-[#62A64C] mb-3 flex items-center">
+                                <i class="fas fa-building mr-3"></i>
                                 Situaciones Laborales
                             </h3>
                             <div class="space-y-3 text-white/80">
                                 <p><strong class="text-white">Cómo reaccionar:</strong></p>
                                 <ul class="space-y-2 ml-4">
-                                    <li>• Mantener profesionalismo según tu empleo</li>
-                                    <li>• Seguir protocolos de la facción/trabajo</li>
-                                    <li>• Interactuar con clientes de forma realista</li>
-                                    <li>• Respetar jerarquías y cadena de mando</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>Mantener profesionalismo según tu empleo.</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>Seguir protocolos de la facción/trabajo.</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>Interactuar con clientes de forma realista.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="glass-effect p-6 border-l-4 border-[#0A75AD]">
+                            <h3 class="pricedown text-2xl text-[#0A75AD] mb-3 flex items-center">
+                                <i class="fas fa-briefcase-medical mr-3"></i>
+                                Situacion Medica
+                            </h3>
+                            <div class="space-y-3 text-white/80">
+                                <p><strong class="text-white">Cómo reaccionar:</strong></p>
+                                <ul class="space-y-2 ml-4">
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>Interpretar heridas y dolor de forma realista.</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>No correr si tienes heridas graves.</li>
+                                    <li><i class="fas fa-circle text-[#D5D534] text-xs mr-2"></i>Seguir indicaciones médicas del roleplay.</li>
                                 </ul>
                             </div>
                         </div>
@@ -379,507 +430,209 @@
             </div>
         </section>
         
-        <!-- TEAM SECTION -->
         <section id="teamSection" class="section-fade min-h-screen hidden">
-            <div class="container mx-auto px-4 py-12">
-                <h1 class="text-5xl font-extrabold text-white mb-12 text-center">Cúpula Administrativa</h1>
+            <div class="container mx-auto px-4 py-16">
+                <h1 class="pricedown text-6xl text-white mb-12 text-center">Cupula <span class="text-[#D5D534]">Administrativa</span></h1>
                 
-                <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform">
-                        <div class="flex items-center mb-4">
-                            <img class="rounded-full w-20 h-20 border-4 border-teal-500" src="https://thumbs.dreamstime.com/b/avatar-del-gato-45383523.jpg" alt="TRIPLEK">
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-2xl font-bold text-white">TRIPLEK</h3>
-                                <p class="text-teal-400 font-semibold">Leadership</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-effect p-8 hover:border-[#D5D534] transition-all">
+                        <div class="flex items-center mb-6">
+                            <img class="rounded-full w-24 h-24 border-4 border-[#D5D534]" src="/images/regex.jpg" alt="REGEX">
+                            <div class="ml-6 flex-1">
+                                <h3 class="pricedown text-3xl text-white">REGEX</h3>
+                                <p class="text-[#D5D534] font-semibold text-lg">Management & Developer</p>
                             </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <a href="#" class="flex-1 flex justify-center items-center bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 p-3 rounded transition-all">
-                                <box-icon name='instagram' type='logo' color='#ffffff'></box-icon>
-                            </a>
-                            <a href="#" class="flex-1 flex justify-center items-center bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 p-3 rounded transition-all">
-                                <box-icon name='twitch' type='logo' color='#ffffff'></box-icon>
-                            </a>
                         </div>
                     </div>
                     
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform">
-                        <div class="flex items-center mb-4">
-                            <img class="rounded-full w-20 h-20 border-4 border-blue-500" src="/images/head_nathaniel.jpg" alt="Nathaniel">
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-2xl font-bold text-white">Nathaniel</h3>
-                                <p class="text-blue-400 font-semibold">Developer</p>
+                    <div class="glass-effect p-8 hover:border-[#0A75AD] transition-all">
+                        <div class="flex items-center mb-6">
+                            <img class="rounded-full w-24 h-24 border-4 border-[#0A75AD]" src="/images/nemiel.png" alt="Nathaniel">
+                            <div class="ml-6 flex-1">
+                                <h3 class="pricedown text-3xl text-white">Nemiel</h3>
+                                <p class="text-[#0A75AD] font-semibold text-lg">Management</p>
                             </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <a href="https://www.instagram.com/visho_xx_/" target="_blank" class="flex-1 flex justify-center items-center bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 p-3 rounded transition-all">
-                                <box-icon name='instagram' type='logo' color='#ffffff'></box-icon>
-                            </a>
-                            <a href="https://github.com/DoNathaniel/" target="_blank" class="flex-1 flex justify-center items-center bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black p-3 rounded transition-all">
-                                <box-icon name='github' type='logo' color='#ffffff'></box-icon>
-                            </a>
                         </div>
                     </div>
                     
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform">
-                        <div class="flex items-center mb-4">
-                            <img class="rounded-full w-20 h-20 border-4 border-purple-500" src="/images/head_rocko.jpg" alt="RockoSx">
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-2xl font-bold text-white">RockoSx</h3>
-                                <p class="text-purple-400 font-semibold">Developer</p>
+                    <div class="glass-effect p-8 hover:border-[#62A64C] transition-all">
+                        <div class="flex items-center mb-6">
+                            <img class="rounded-full w-24 h-24 border-4 border-[#62A64C]" src="/images/izumi.gif" alt="Izumi">
+                            <div class="ml-6 flex-1">
+                                <h3 class="pricedown text-3xl text-white">Izumi</h3>
+                                <p class="text-[#62A64C] font-semibold text-lg">Operador V</p>
                             </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <a href="https://www.instagram.com/thony_.19/" target="_blank" class="flex-1 flex justify-center items-center bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 p-3 rounded transition-all">
-                                <box-icon name='instagram' type='logo' color='#ffffff'></box-icon>
-                            </a>
-                            <a href="https://github.com/RockoSchultz/" target="_blank" class="flex-1 flex justify-center items-center bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black p-3 rounded transition-all">
-                                <box-icon name='github' type='logo' color='#ffffff'></box-icon>
-                            </a>
                         </div>
                     </div>
                     
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform">
-                        <div class="flex items-center mb-4">
-                            <img class="rounded-full w-20 h-20 border-4 border-orange-500" src="/images/head_rooney.jpg" alt="Rooney">
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-2xl font-bold text-white">Rooney</h3>
-                                <p class="text-orange-400 font-semibold">Lead Admin</p>
+                    <div class="glass-effect p-8 hover:border-[#CB3126] transition-all">
+                        <div class="flex items-center mb-6">
+                            <img class="rounded-full w-24 h-24 border-4 border-[#CB3126]" src="/images/logo_gotham.png" alt="Rooney">
+                            <div class="ml-6 flex-1">
+                                <h3 class="pricedown text-3xl text-white">Gotham / Deugub</h3>
+                                <p class="text-[#CB3126] font-semibold text-lg">GM Base</p>
                             </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <a href="https://discord.gg/awFXWdD2EW" target="_blank" class="flex-1 flex justify-center items-center bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 p-3 rounded transition-all">
-                                <box-icon name='discord-alt' type='logo' color='#ffffff'></box-icon>
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- SHOP SECTION -->
         <section id="shopSection" class="section-fade min-h-screen hidden">
-            <div class="container mx-auto px-4 py-12">
-                <h1 class="text-5xl font-extrabold text-white mb-12 text-center">Tienda VIP</h1>
+            <div class="container mx-auto px-4 py-16">
+                <h1 class="pricedown text-6xl text-white mb-12 text-center">Tienda <span class="text-[#D5D534]">VIP</span></h1>
                 
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform border-2 border-emerald-500/50">
-                        <div class="text-center mb-4">
-                            <div class="inline-block p-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full mb-4">
-                                <box-icon name='diamond' type='solid' color='#ffffff' size='lg'></box-icon>
-                            </div>
-                            <h3 class="text-3xl font-bold text-white mb-2">VIP Bronce</h3>
-                            <p class="text-5xl font-extrabold text-emerald-400 mb-2">$4.99</p>
-                            <p class="text-white/60">/ 30 días</p>
-                        </div>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#10b981' class="mr-2"></box-icon>
-                                <span>+20% XP en misiones</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#10b981' class="mr-2"></box-icon>
-                                <span>Tag personalizado</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#10b981' class="mr-2"></box-icon>
-                                <span>Acceso a chat VIP</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#10b981' class="mr-2"></box-icon>
-                                <span>2 slots de personajes</span>
-                            </li>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-effect p-8 border-2 border-[#62A64C]/30 text-center">
+                        <h3 class="pricedown text-4xl text-white mb-3">VIP Bronce</h3>
+                        <p class="text-5xl font-extrabold text-[#62A64C] mb-2">$4.99</p>
+                        <ul class="space-y-3 mb-8 text-left mt-6">
+                            <li class="flex items-center text-white/80"><i class="fas fa-check text-[#62A64C] mr-3"></i>+20% XP</li>
+                            <li class="flex items-center text-white/80"><i class="fas fa-check text-[#62A64C] mr-3"></i>Tag Chat</li>
                         </ul>
-                        <button class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-3 rounded-lg transition-all">
-                            Comprar Ahora
-                        </button>
+                        <button class="btn-secondary w-full border-[#62A64C] hover:bg-[#62A64C]">COMPRAR</button>
                     </div>
                     
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform border-2 border-blue-500/50 relative">
-                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold">
-                            MÁS POPULAR
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="inline-block p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-4">
-                                <box-icon name='crown' type='solid' color='#ffffff' size='lg'></box-icon>
-                            </div>
-                            <h3 class="text-3xl font-bold text-white mb-2">VIP Plata</h3>
-                            <p class="text-5xl font-extrabold text-blue-400 mb-2">$9.99</p>
-                            <p class="text-white/60">/ 30 días</p>
-                        </div>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#3b82f6' class="mr-2"></box-icon>
-                                <span>Todo lo de Bronce</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#3b82f6' class="mr-2"></box-icon>
-                                <span>+50% XP en misiones</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#3b82f6' class="mr-2"></box-icon>
-                                <span>Colores personalizados</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#3b82f6' class="mr-2"></box-icon>
-                                <span>3 slots de personajes</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#3b82f6' class="mr-2"></box-icon>
-                                <span>Vehículo exclusivo</span>
-                            </li>
+                    <div class="glass-effect p-8 border-2 border-[#D5D534] relative text-center transform scale-105">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#D5D534] text-[#0C0C0C] px-6 py-2 rounded-full font-bold pricedown">POPULAR</div>
+                        <h3 class="pricedown text-4xl text-white mb-3">VIP Plata</h3>
+                        <p class="text-5xl font-extrabold text-[#D5D534] mb-2">$9.99</p>
+                        <ul class="space-y-3 mb-8 text-left mt-6">
+                            <li class="flex items-center text-white/80"><i class="fas fa-check text-[#D5D534] mr-3"></i>Todo Bronce</li>
+                            <li class="flex items-center text-white/80"><i class="fas fa-check text-[#D5D534] mr-3"></i>Vehículo VIP</li>
                         </ul>
-                        <button class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 rounded-lg transition-all">
-                            Comprar Ahora
-                        </button>
+                        <button class="btn-primary w-full">COMPRAR</button>
                     </div>
                     
-                    <div class="glass-effect p-6 rounded-lg hover:scale-105 transition-transform border-2 border-amber-500/50">
-                        <div class="text-center mb-4">
-                            <div class="inline-block p-4 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full mb-4">
-                                <box-icon name='trophy' type='solid' color='#ffffff' size='lg'></box-icon>
-                            </div>
-                            <h3 class="text-3xl font-bold text-white mb-2">VIP Oro</h3>
-                            <p class="text-5xl font-extrabold text-amber-400 mb-2">$19.99</p>
-                            <p class="text-white/60">/ 30 días</p>
-                        </div>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#f59e0b' class="mr-2"></box-icon>
-                                <span>Todo lo de Plata</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#f59e0b' class="mr-2"></box-icon>
-                                <span>+100% XP en misiones</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#f59e0b' class="mr-2"></box-icon>
-                                <span>Prioridad en server</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#f59e0b' class="mr-2"></box-icon>
-                                <span>5 slots de personajes</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#f59e0b' class="mr-2"></box-icon>
-                                <span>Casa/negocio gratis</span>
-                            </li>
-                            <li class="flex items-center text-white/80">
-                                <box-icon name='check' color='#f59e0b' class="mr-2"></box-icon>
-                                <span>Soporte prioritario</span>
-                            </li>
+                    <div class="glass-effect p-8 border-2 border-[#CB3126]/30 text-center">
+                        <h3 class="pricedown text-4xl text-white mb-3">VIP Oro</h3>
+                        <p class="text-5xl font-extrabold text-[#CB3126] mb-2">$19.99</p>
+                        <ul class="space-y-3 mb-8 text-left mt-6">
+                            <li class="flex items-center text-white/80"><i class="fas fa-check text-[#CB3126] mr-3"></i>Todo Plata</li>
+                            <li class="flex items-center text-white/80"><i class="fas fa-check text-[#CB3126] mr-3"></i>Casa Gratis</li>
                         </ul>
-                        <button class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-lg transition-all">
-                            Comprar Ahora
-                        </button>
+                        <button class="btn-secondary w-full border-[#CB3126] hover:bg-[#CB3126]">COMPRAR</button>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- FORUM SECTION -->
         <section id="forumSection" class="section-fade min-h-screen hidden">
-            <div class="container mx-auto px-4 py-12">
-                <h1 class="text-5xl font-extrabold text-white mb-12 text-center">Foro de la Comunidad</h1>
-                
-                <div class="space-y-4">
-                    <div class="glass-effect p-6 rounded-lg hover:bg-stone-700/50 transition-all cursor-pointer">
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <box-icon name='pin' type='solid' color='#ffffff'></box-icon>
-                            </div>
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-xl font-bold text-white mb-2">📌 Anuncios Oficiales</h3>
-                                <p class="text-white/70 mb-2">Novedades, actualizaciones y anuncios importantes del servidor.</p>
-                                <div class="flex items-center text-white/50 text-sm">
-                                    <span>152 temas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>1,234 respuestas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>Última actividad: hace 2 horas</span>
-                                </div>
-                            </div>
+            <div class="container mx-auto px-4 py-16">
+                <h1 class="pricedown text-6xl text-white mb-12 text-center">Foro <span class="text-[#D5D534]">Comunidad</span></h1>
+                <div class="space-y-4 max-w-4xl mx-auto">
+                    <div class="glass-effect p-6 flex items-center gap-6 hover:border-[#D5D534] transition-all cursor-pointer">
+                        <i class="fas fa-bullhorn text-4xl text-[#D5D534]"></i>
+                        <div>
+                            <h3 class="pricedown text-2xl text-white">Anuncios Oficiales</h3>
+                            <p class="text-white/70">Novedades y actualizaciones del servidor.</p>
                         </div>
                     </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg hover:bg-stone-700/50 transition-all cursor-pointer">
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <box-icon name='group' color='#ffffff'></box-icon>
-                            </div>
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-xl font-bold text-white mb-2">👥 Facciones y Organizaciones</h3>
-                                <p class="text-white/70 mb-2">Discusiones sobre facciones, reclutamiento y eventos faccionarios.</p>
-                                <div class="flex items-center text-white/50 text-sm">
-                                    <span>287 temas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>3,456 respuestas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>Última actividad: hace 15 minutos</span>
-                                </div>
-                            </div>
+                    <div class="glass-effect p-6 flex items-center gap-6 hover:border-[#62A64C] transition-all cursor-pointer">
+                        <i class="fas fa-users text-4xl text-[#62A64C]"></i>
+                        <div>
+                            <h3 class="pricedown text-2xl text-white">Facciones</h3>
+                            <p class="text-white/70">Reclutamiento y discusión de organizaciones.</p>
                         </div>
                     </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg hover:bg-stone-700/50 transition-all cursor-pointer">
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <box-icon name='chat' color='#ffffff'></box-icon>
-                            </div>
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-xl font-bold text-white mb-2">💬 Charla General</h3>
-                                <p class="text-white/70 mb-2">Conversaciones generales, presentaciones y off-topic.</p>
-                                <div class="flex items-center text-white/50 text-sm">
-                                    <span>1,245 temas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>12,789 respuestas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>Última actividad: hace 3 minutos</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg hover:bg-stone-700/50 transition-all cursor-pointer">
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <box-icon name='help-circle' color='#ffffff'></box-icon>
-                            </div>
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-xl font-bold text-white mb-2">❓ Soporte y Ayuda</h3>
-                                <p class="text-white/70 mb-2">Obtén ayuda con problemas técnicos, dudas sobre reglas y más.</p>
-                                <div class="flex items-center text-white/50 text-sm">
-                                    <span>456 temas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>2,134 respuestas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>Última actividad: hace 30 minutos</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg hover:bg-stone-700/50 transition-all cursor-pointer">
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <box-icon name='bulb' type='solid' color='#ffffff'></box-icon>
-                            </div>
-                            <div class="ml-4 flex-1">
-                                <h3 class="text-xl font-bold text-white mb-2">💡 Sugerencias</h3>
-                                <p class="text-white/70 mb-2">Comparte tus ideas para mejorar el servidor.</p>
-                                <div class="flex items-center text-white/50 text-sm">
-                                    <span>234 temas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>1,567 respuestas</span>
-                                    <span class="mx-2">•</span>
-                                    <span>Última actividad: hace 1 hora</span>
-                                </div>
-                            </div>
+                    <div class="glass-effect p-6 flex items-center gap-6 hover:border-[#0A75AD] transition-all cursor-pointer">
+                        <i class="fas fa-comments text-4xl text-[#0A75AD]"></i>
+                        <div>
+                            <h3 class="pricedown text-2xl text-white">Charla General</h3>
+                            <p class="text-white/70">Discusion general y off-topic.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- FAQ SECTION -->
         <section id="faqSection" class="section-fade min-h-screen hidden">
-            <div class="container mx-auto px-4 py-12">
-                <h1 class="text-5xl font-extrabold text-white mb-12 text-center">Preguntas Frecuentes</h1>
-                
+            <div class="container mx-auto px-4 py-16">
+                <h1 class="pricedown text-6xl text-white mb-12 text-center">Preguntas <span class="text-[#D5D534]">Frecuentes</span></h1>
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
-                            <span class="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">1</span>
-                            ¿Es obligatorio el uso de SA-MP0.3dl?
-                        </h3>
-                        <p class="text-white/80 pl-11">
-                            No, pero como administración se recomienda el uso del mismo para una jugabilidad más cómoda y parecida entre todos los jugadores. Esta versión incluye texturas y objetos personalizados que mejoran la experiencia visual.
-                        </p>
+                    <div class="glass-effect p-6">
+                        <h3 class="text-xl font-bold text-white mb-2 text-[#D5D534]">¿Es obligatorio SA-MP 0.3dl?</h3>
+                        <p class="text-white/70">No es obligatorio pero sí altamente recomendado para ver skins y objetos personalizados.</p>
                     </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
-                            <span class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">2</span>
-                            Tengo problemas con mi cuenta, ¿Qué puedo hacer?
-                        </h3>
-                        <p class="text-white/80 pl-11">
-                            Como se aconseja a todos los usuarios, si tienen algún problema con su cuenta, pueden abrir un Ticket en nuestro Discord para que el STAFF pueda ayudarte de manera rápida y efectiva.
-                        </p>
+                    <div class="glass-effect p-6">
+                        <h3 class="text-xl font-bold text-white mb-2 text-[#D5D534]">¿Cómo reporto un bug?</h3>
+                        <p class="text-white/70">Usa el canal de soporte en nuestro Discord o abre un ticket en el foro.</p>
                     </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
-                            <span class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">3</span>
-                            Quiero reportar a un usuario/administrador, ¿Qué hago?
-                        </h3>
-                        <p class="text-white/80 pl-11">
-                            Como se específica en nuestra normativa, se les recomienda a todos sacar las pruebas suficientes (capturas, videos) para posteriormente reportar en un Ticket de Discord. El equipo revisará el caso en detalle.
-                        </p>
+                    <div class="glass-effect p-6">
+                        <h3 class="text-xl font-bold text-white mb-2 text-[#D5D534]">¿Cómo postulo a facción?</h3>
+                        <p class="text-white/70">Debes ingresar al foro, sección facciones, y buscar los requisitos de la que te interese.</p>
                     </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
-                            <span class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">4</span>
-                            ¿Es obligatorio el uso de TeamSpeak 3?
-                        </h3>
-                        <p class="text-white/80 pl-11">
-                            Como servidor no solicitamos el uso del TeamSpeak 3, pero sí hay facciones legales y principales que lo solicitan a la hora de realizar una postulación para mejor coordinación entre miembros.
-                        </p>
-                    </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
-                            <span class="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">5</span>
-                            Quiero ser líder de una facción.
-                        </h3>
-                        <p class="text-white/80 pl-11">
-                            Para ser líder de facción, necesitas primero que nada una facción libre. Luego el comité de faccionario tiene otros requerimientos, tales como un proyecto armado, un Discord e interés real. El proceso incluye una evaluación de tu experiencia en roleplay.
-                        </p>
-                    </div>
-                    
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-white mb-3 flex items-center">
-                            <span class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">6</span>
-                            ¿Cómo puedo mejorar mi nivel de roleplay?
-                        </h3>
-                        <p class="text-white/80 pl-11">
-                            Practica constantemente, lee nuestra guía de roleplay, observa a jugadores experimentados y pide feedback. La clave está en ser consistente con tu personaje y siempre actuar de forma realista.
-                        </p>
+                    <div class="glass-effect p-6">
+                        <h3 class="text-xl font-bold text-white mb-2 text-[#D5D534]">¿Hay chat de voz?</h3>
+                        <p class="text-white/70">Usamos TeamSpeak 3 para facciones legales, el resto es opcional.</p>
                     </div>
                 </div>
             </div>
         </section>
-    </div>
-    
-    <!-- Footer -->
-    <footer class="glass-effect py-8 mt-16 content-wrapper">
+
+    </div> <footer class="glass-effect py-12 mt-16 border-t border-[#D5D534]/20">
         <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8 mb-6">
-                <div>
-                    <h3 class="text-white font-bold text-xl mb-4">Boulevard Roleplay</h3>
-                    <p class="text-white/70">La mejor experiencia de roleplay en SA-MP. Únete y vive historias únicas.</p>
-                </div>
-                <div>
-                    <h3 class="text-white font-bold text-xl mb-4">Enlaces Rápidos</h3>
-                    <ul class="space-y-2 text-white/70">
-                        <li><a href="#" onclick="showSection('home')" class="hover:text-teal-400 transition-colors">Inicio</a></li>
-                        <li><a href="#" onclick="showSection('roleplay')" class="hover:text-teal-400 transition-colors">Guía de Roleplay</a></li>
-                        <li><a href="#" onclick="showSection('shop')" class="hover:text-teal-400 transition-colors">Tienda VIP</a></li>
-                        <li><a href="#" onclick="showSection('faq')" class="hover:text-teal-400 transition-colors">FAQ</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-white font-bold text-xl mb-4">Comunidad</h3>
-                    <div class="flex gap-3">
-                        <a href="https://discord.gg/awFXWdD2EW" target="_blank" class="w-12 h-12 bg-indigo-500 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all">
-                            <box-icon name='discord-alt' type='logo' color='#ffffff'></box-icon>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-pink-500 hover:bg-pink-600 rounded-lg flex items-center justify-center transition-all">
-                            <box-icon name='instagram' type='logo' color='#ffffff'></box-icon>
-                        </a>
-                        <a href="#" class="w-12 h-12 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center transition-all">
-                            <box-icon name='youtube' type='logo' color='#ffffff'></box-icon>
-                        </a>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-[#D5D534] rounded flex items-center justify-center">
+                        <span class="pricedown text-[#0C0C0C] text-xl">B</span>
                     </div>
+                    <span class="pricedown text-white text-2xl">Boulevard RP</span>
                 </div>
-            </div>
-            <div class="border-t border-white/10 pt-6 text-center text-white/60">
-                <p>Boulevard Roleplay © Todos los derechos reservados (2024 - 2025)</p>
+                
+                <div class="flex space-x-6 text-white/60">
+                    <a href="#" class="hover:text-[#D5D534]">Discord</a>
+                    <a href="#" class="hover:text-[#D5D534]">Foro</a>
+                    <a href="#" class="hover:text-[#D5D534]">Tienda</a>
+                </div>
+                
+                <p class="text-white/40 text-sm">&copy; 2024 Boulevard Roleplay</p>
             </div>
         </div>
     </footer>
-    
+
     <script>
-        let currentSection = 'home';
-        
-        function showSection(section) {
+        // Sistema de navegación
+        function showSection(sectionId) {
             const sections = ['home', 'roleplay', 'team', 'shop', 'forum', 'faq'];
-            const currentEl = document.getElementById(currentSection + 'Section');
-            const newEl = document.getElementById(section + 'Section');
-            
-            currentEl.classList.remove('active');
-            currentEl.classList.add('hidden');
-            
-            setTimeout(() => {
-                newEl.classList.remove('hidden');
-                setTimeout(() => {
-                    newEl.classList.add('active');
-                }, 50);
-            }, 300);
-            
-            currentSection = section;
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-        
-        function showConnectNotification() {
-            const notification = document.getElementById('notification');
-            const discordBtn = document.getElementById('discordBtn');
-            
-            notification.classList.add('show');
-            discordBtn.classList.add('pulse-glow');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    discordBtn.classList.remove('pulse-glow');
-                }, 2000);
-            }, 5000);
-        }
-        
-        function changeBg(imageUrl) {
-            const bgOverlay = document.getElementById('bgOverlay');
-            if (imageUrl) {
-                bgOverlay.style.backgroundImage = `url('${imageUrl}')`;
-                bgOverlay.style.opacity = '0.15';
-            } else {
-                bgOverlay.style.backgroundImage = 'none';
-                bgOverlay.style.opacity = '0';
+            sections.forEach(id => {
+                const el = document.getElementById(id + 'Section');
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('active');
+                }
+            });
+            const target = document.getElementById(sectionId + 'Section');
+            if (target) {
+                target.classList.remove('hidden');
+                setTimeout(() => target.classList.add('active'), 10);
+                window.scrollTo(0,0);
             }
         }
-        
+
+        // Sistema de pestañas Roleplay
+        function showRoleplayContent(contentId) {
+            ['entornos', 'interpretacion', 'situaciones'].forEach(id => {
+                document.getElementById(id + 'Content').classList.add('hidden');
+            });
+            document.getElementById(contentId + 'Content').classList.remove('hidden');
+        }
+
+        // Menú móvil
         function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+            document.getElementById('mobileMenu').classList.toggle('hidden');
         }
-        
-        function showRoleplayContent(content) {
-            const contents = ['entornos', 'interpretacion', 'situaciones'];
-            const tabs = document.querySelectorAll('.rp-tab');
-            
-            tabs.forEach(tab => tab.classList.remove('active', 'bg-teal-500/20'));
-            event.target.closest('.rp-tab').classList.add('active', 'bg-teal-500/20');
-            
-            contents.forEach(c => {
-                const el = document.getElementById(c + 'Content');
-                if (c === content) {
-                    el.classList.remove('hidden');
-                    setTimeout(() => el.style.opacity = '1', 50);
-                } else {
-                    el.style.opacity = '0';
-                    setTimeout(() => el.classList.add('hidden'), 300);
-                }
-            });
+
+        // Notificación
+        function showConnectNotification() {
+            const notif = document.getElementById('notification');
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
         }
-        
-        // Fade in animations on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
+
+        // Iniciar en Home
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.fade-in').forEach(el => {
-                observer.observe(el);
-            });
+            showSection('home');
         });
     </script>
 </body>

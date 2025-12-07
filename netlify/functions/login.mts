@@ -42,10 +42,10 @@ export default async (req: Request, context: Context) => {
     }
 
     // Get database credentials from environment variables
-    const dbHost = Netlify.env.get("SQL_HOSTNAME");
-    const dbUser = Netlify.env.get("SQL_USERNAME");
-    const dbName = Netlify.env.get("SQL_DATABASE");
-    const dbPassword = Netlify.env.get("SQL_PASSWORD");
+    const dbHost = Netlify.env.get("143.20.99.77");
+    const dbUser = Netlify.env.get("u11_ov5jjXLyu3");
+    const dbName = Netlify.env.get("s11_samp_local");
+    const dbPassword = Netlify.env.get("iE4n32+4JDD@+0jjkuyc+nhC");
 
     if (!dbHost || !dbUser || !dbName || !dbPassword) {
       console.error("Database credentials not configured");
